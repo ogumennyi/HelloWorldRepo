@@ -1,6 +1,11 @@
 @CHARSET "UTF-8";
 
 html { 
-  background-image: url('../images/bg.jpg'); 
-  background-repeat:repeat;
+	background-image: url('../images/bg.jpg'); 
+	background-repeat:repeat;
+}
+
+.table {
+	background: url('../images/table.jpg');
+	margin: auto;
 }

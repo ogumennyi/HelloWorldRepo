@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,6 +8,25 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/ishop.css" media="screen" />
 </head>
 <body>
-List of iShop products
+
+<div style="width: 100%;">
+<div style="text-align: center; margin-top: 100px; color: #0101DF; font-size: 1.5em">List of <b>iShop</b> products:</div>
+<br/>
+<table class="table" border="1">
+	<tr>
+		<td>
+			<div style="padding: 5px 2px 5px 2px">
+			<c:forEach items="${groupsList}" var="group" varStatus="vs">
+				<c:if test="${!vs.first}"><hr/></c:if>
+				<div>${group.group_name}</div>
+			</c:forEach>
+			</div>		
+		</td>
+		<td>
+		</td>
+	</tr>
+</table>
+</div>
+
 </body>
 </html>

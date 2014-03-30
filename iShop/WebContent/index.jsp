@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div style="width: 100%; margin-top: 300px; text-align: center; font-size: 3em">
-	<a href="${pageContext.request.contextPath}/ipage"><i>Welcome to <b>iShop</b></i></a>
+	<a href="${pageContext.request.contextPath}/ipage" style="color: #0101DF"><i>Welcome to <b>iShop</b></i></a>
 	</div>
 </body>
 </html>
