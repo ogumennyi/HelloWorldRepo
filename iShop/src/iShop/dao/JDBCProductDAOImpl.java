@@ -1,6 +1,6 @@
 package iShop.dao;
 
-import iShop.model.Group;
+import iShop.model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-public class JDBCGroupDAOImpl implements JDBCGroupDAO {
+public class JDBCProductDAOImpl implements JDBCProductDAO {
 
 	private DataSource dataSource;
 	 
@@ -20,21 +20,22 @@ public class JDBCGroupDAOImpl implements JDBCGroupDAO {
 	}
 	
 	@Override
-	public List<Group> getGroups() {
-		String sql = "SELECT * FROM t_group";
+	public List<Product> getProductsByGroup(int group_id) {
+		String sql = "SELECT * FROM t_product WHERE group_id=?";
 		Connection conn = null;
 		try {
-			List<Group> groupsList = new ArrayList<Group>();
+			List<Product> productsList = new ArrayList<Product>();
 			conn = dataSource.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, group_id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				Group group = new Group(rs.getInt("GROUP_ID"), rs.getString("GROUP_NAME"));
-				groupsList.add(group);
+				Product product = new Product(rs.getInt("PRODUCT_ID"), rs.getString("PRODUCT_NAME"), rs.getInt("GROUP_ID"), rs.getFloat("PRODUCT_PRICE"));
+				productsList.add(product);
 			}
 			rs.close();
 			ps.close();
-			return groupsList;
+			return productsList;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

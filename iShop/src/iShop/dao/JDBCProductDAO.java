@@ -1,0 +1,11 @@
+package iShop.dao;
+
+import iShop.model.Product;
+
+import java.util.List;
+
+public interface JDBCProductDAO {
+
+	public List<Product> getProductsByGroup(int group_id);
+	
+}

@@ -15,5 +15,9 @@
 	<bean id="JDBCGroupDAOImpl" class="iShop.dao.JDBCGroupDAOImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<bean id="JDBCProductDAOImpl" class="iShop.dao.JDBCProductDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
  
 </beans>

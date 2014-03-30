@@ -5,7 +5,10 @@ html {
 	background-repeat:repeat;
 }
 
-.table {
+.inner_table {
 	background: url('../images/table.jpg');
+}
+
+.outer_table {
 	margin: auto;
 }
