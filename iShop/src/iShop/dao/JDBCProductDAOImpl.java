@@ -20,8 +20,8 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 	}
 	
 	@Override
-	public List<Product> getAllProducts() {
-		String sql = "SELECT * FROM t_product";
+	public List<Product> getAllProducts(String p_name_order) {
+		String sql = "SELECT * FROM t_product"+((!"NONE".equalsIgnoreCase(p_name_order))?" ORDER BY product_name "+p_name_order:"");
 		Connection conn = null;
 		try {
 			List<Product> productsList = new ArrayList<Product>();
@@ -47,8 +47,8 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 	}
 	
 	@Override
-	public List<Product> getProductsByGroup(int group_id) {
-		String sql = "SELECT * FROM t_product WHERE group_id=?";
+	public List<Product> getProductsByGroup(int group_id, String p_name_order) {
+		String sql = "SELECT * FROM t_product WHERE group_id=?"+((!"NONE".equalsIgnoreCase(p_name_order))?" ORDER BY product_name "+p_name_order:"");
 		Connection conn = null;
 		try {
 			List<Product> productsList = new ArrayList<Product>();
