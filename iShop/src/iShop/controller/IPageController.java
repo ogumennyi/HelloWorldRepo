@@ -25,11 +25,9 @@ public class IPageController {
 	@RequestMapping(value = "/ipage", method = RequestMethod.GET)
 	public String productsByGroup(ModelMap modelMap, 
 			@RequestParam(value = "group_id", required = false) Integer groupId,
-			@RequestParam(value = "p_name_order", required = false) String pNameOrder,
-			@RequestParam(value = "p_price_order", required = false) String pPriceOrder,
+			@RequestParam(value = "p_name_order", defaultValue = "none") String pNameOrder,
+			@RequestParam(value = "p_price_order", defaultValue = "none") String pPriceOrder,
 			@RequestParam(value = "page", required = false) Integer pageNum) {
-		if(pNameOrder==null) pNameOrder = "none";
-		if(pPriceOrder==null) pPriceOrder = "none";
 		if(pageNum==null) pageNum = new Integer(1);
 		HashMap<String, String> orderParams = new HashMap<String, String>();
 		processOrderParamsByColumnName(orderParams, "p_name_order", pNameOrder, modelMap);
@@ -48,10 +46,6 @@ public class IPageController {
 			String paramOrder, ModelMap model) {
 		if (!"none".equals(paramOrder.toLowerCase()))
 			orderParams.put(paramName, paramOrder);
-		putOrderParamsToModelMap(paramName, paramOrder, model);
-	}
-
-	private void putOrderParamsToModelMap(String paramName, String paramOrder, ModelMap model) {
 		switch (paramOrder.toLowerCase()) {
 		case "none":
 			model.put(paramName, "none");

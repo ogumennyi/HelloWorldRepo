@@ -64,45 +64,6 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 		}
 	}
 
-	private String getColumnNameByParam(String param) {
-		switch (param) {
-		case "p_name_order":
-			return "product_name";
-		case "p_price_order":
-			return "product_price";
-		default:
-			return null;
-		}
-	}
-	
-	private int getRowsCount(Integer groupId){
-		String sql = "SELECT COUNT(*) FROM t_product";
-		if(groupId != null) 
-			sql+=" WHERE group_id="+groupId.toString();
-		Connection conn = null;
-		int rowsCount = 0;
-		try {
-			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				rowsCount = rs.getInt(1);
-			}
-			rs.close();
-			ps.close();
-			return rowsCount;
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-	}
-
 	@Override
 	public List<String> getPagesList(Integer pageNum, Integer groupId) {
 		ArrayList<String> pagesList = new ArrayList<String>();
@@ -143,8 +104,45 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 		System.out.println(pageNum);
 		System.out.println(pagesList);
 		return pagesList;
+	}	
+
+	private String getColumnNameByParam(String param) {
+		switch (param) {
+		case "p_name_order":
+			return "product_name";
+		case "p_price_order":
+			return "product_price";
+		default:
+			return null;
+		}
 	}
 	
+	private int getRowsCount(Integer groupId){
+		String sql = "SELECT COUNT(*) FROM t_product";
+		if(groupId != null) 
+			sql+=" WHERE group_id="+groupId.toString();
+		Connection conn = null;
+		int rowsCount = 0;
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				rowsCount = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+			return rowsCount;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+				}
+			}
+		}
+	}
 	
-
 }
