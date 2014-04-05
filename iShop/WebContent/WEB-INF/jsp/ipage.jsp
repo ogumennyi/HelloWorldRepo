@@ -16,7 +16,7 @@
 <tr><td valign="top">
 <table class="inner_table" border="1">
 	<tr>
-		<th width="150px" style="padding: 1x 2px">Product group (<a href="${pageContext.request.contextPath}/ipage?p_name_order=${p_name_order}">all</a>)</th>
+		<th width="150px" style="padding: 1x 2px">Product group (<a href="${pageContext.request.contextPath}/ipage?p_name_order=${p_name_order}&p_price_order=${p_price_order}">all</a>)</th>
 	</tr>
 	<tr>
 		<td align="center">
@@ -24,7 +24,7 @@
 				<c:forEach items="${groupsList}" var="group" varStatus="vs">
 					<c:if test="${!vs.first}"><hr/></c:if>
 					<div>
-						<a href="${pageContext.request.contextPath}/ipage/${group.group_id}?p_name_order=${p_name_order}">
+						<a href="${pageContext.request.contextPath}/ipage/${group.group_id}?p_name_order=${p_name_order}&p_price_order=${p_price_order}">
 						<c:choose>
 							<c:when test="${group.group_id == current_group_id}">
 								<b>${group.group_name}</b>
@@ -47,9 +47,13 @@
 		<th width="500px">
 			<c:if test="${'asc' eq p_name_order}"><img src="${pageContext.request.contextPath}/images/arrow_asc.png"/>&nbsp;</c:if>
 			<c:if test="${'desc' eq p_name_order}"><img src="${pageContext.request.contextPath}/images/arrow_desc.png"/>&nbsp;</c:if>
-			<a href="${pageContext.request.contextPath}/ipage/${current_group_id}?p_name_order=${p_name_order_n}">Product name</a>
+			<a href="${pageContext.request.contextPath}/ipage/${current_group_id}?p_name_order=${p_name_order_n}&p_price_order=${p_price_order}">Product name</a>
 		</th>
-		<th width="100px">Product price</th>
+		<th width="120px">
+			<c:if test="${'asc' eq p_price_order}"><img src="${pageContext.request.contextPath}/images/arrow_asc.png"/>&nbsp;</c:if>
+			<c:if test="${'desc' eq p_price_order}"><img src="${pageContext.request.contextPath}/images/arrow_desc.png"/>&nbsp;</c:if>
+			<a href="${pageContext.request.contextPath}/ipage/${current_group_id}?curr_order_by=p_name_order&p_name_order=${p_name_order}&p_price_order=${p_price_order_n}">Product price</a>
+		</th>
 	</tr>
 	<tr>
 		<c:choose>

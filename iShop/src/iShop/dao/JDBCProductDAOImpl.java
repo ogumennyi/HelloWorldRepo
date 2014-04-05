@@ -11,17 +11,25 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class JDBCProductDAOImpl implements JDBCProductDAO {
 
+	@Autowired
 	private DataSource dataSource;
-	 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-	
+	 	
 	@Override
-	public List<Product> getAllProducts(String p_name_order) {
-		String sql = "SELECT * FROM t_product"+((!"NONE".equalsIgnoreCase(p_name_order))?" ORDER BY product_name "+p_name_order:"");
+	public List<Product> getAllProducts(ArrayList<String> orderParams) {
+		String sql = "SELECT * FROM t_product";
+		String orderByClause = null;
+		for(String orderParam : orderParams){
+			if(orderByClause==null) orderByClause = " ORDER BY "+orderParam;
+			else orderByClause+=", "+orderParam;
+		}
+		if(orderByClause!=null) sql+=orderByClause;
+		System.out.println(sql);
 		Connection conn = null;
 		try {
 			List<Product> productsList = new ArrayList<Product>();
@@ -47,8 +55,15 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 	}
 	
 	@Override
-	public List<Product> getProductsByGroup(int group_id, String p_name_order) {
-		String sql = "SELECT * FROM t_product WHERE group_id=?"+((!"NONE".equalsIgnoreCase(p_name_order))?" ORDER BY product_name "+p_name_order:"");
+	public List<Product> getProductsByGroup(int group_id, ArrayList<String> orderParams) {
+		String sql = "SELECT * FROM t_product WHERE group_id=?";
+		String orderByClause = null;
+		for(String orderParam : orderParams){
+			if(orderByClause==null) orderByClause = " ORDER BY "+orderParam;
+			else orderByClause+=", "+orderParam;
+		}
+		if(orderByClause!=null) sql+=orderByClause;
+		System.out.println(sql);
 		Connection conn = null;
 		try {
 			List<Product> productsList = new ArrayList<Product>();
