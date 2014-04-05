@@ -1,6 +1,7 @@
 package iShop.controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import iShop.dao.JDBCGroupDAO;
 import iShop.dao.JDBCProductDAO;
@@ -8,52 +9,63 @@ import iShop.dao.JDBCProductDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class IPageController {
-	
+
 	@Autowired
 	JDBCGroupDAO groupDAO;
-	
+
 	@Autowired
 	JDBCProductDAO productDAO;
 
 	@RequestMapping(value = "/ipage", method = RequestMethod.GET)
-    public String allProducts(@RequestParam("p_name_order") String p_name_order, @RequestParam("p_price_order") String p_price_order, ModelMap modelMap) {
-		ArrayList<String> orderParams = new ArrayList<String>();
-		processOrderParamsByColumnName(orderParams, "product_name", "p_name_order", p_name_order, modelMap);
-		processOrderParamsByColumnName(orderParams, "product_price", "p_price_order", p_price_order, modelMap);
+	public String productsByGroup(ModelMap modelMap, 
+			@RequestParam(value = "group_id", required = false) Integer groupId,
+			@RequestParam(value = "p_name_order", required = false) String pNameOrder,
+			@RequestParam(value = "p_price_order", required = false) String pPriceOrder,
+			@RequestParam(value = "page", required = false) Integer pageNum) {
+		if(pNameOrder==null) pNameOrder = "none";
+		if(pPriceOrder==null) pPriceOrder = "none";
+		if(pageNum==null) pageNum = new Integer(1);
+		HashMap<String, String> orderParams = new HashMap<String, String>();
+		processOrderParamsByColumnName(orderParams, "p_name_order", pNameOrder, modelMap);
+		processOrderParamsByColumnName(orderParams, "p_price_order", pPriceOrder, modelMap);
 		modelMap.put("groupsList", groupDAO.getGroups());
-		modelMap.put("productsList", productDAO.getAllProducts(orderParams));
-        return "ipage";
-    }
-	
-	@RequestMapping(value = "/ipage/{group_id}", method = RequestMethod.GET)
-    public String productsByGroup(@PathVariable int group_id, @RequestParam("p_name_order") String p_name_order, @RequestParam("p_price_order") String p_price_order, ModelMap modelMap) {
-		ArrayList<String> orderParams = new ArrayList<String>();
-		processOrderParamsByColumnName(orderParams, "product_name", "p_name_order", p_name_order, modelMap);
-		processOrderParamsByColumnName(orderParams, "product_price", "p_price_order", p_price_order, modelMap);
-		modelMap.put("groupsList", groupDAO.getGroups());
-		modelMap.put("productsList", productDAO.getProductsByGroup(group_id, orderParams));
-		modelMap.put("current_group_id", group_id);
-        return "ipage";
-    }
-	
-	private void processOrderParamsByColumnName(ArrayList<String> orderParams, String fieldName, String paramName, String paramOrder, ModelMap model){
-		if(!"none".equals(paramOrder.toLowerCase())) orderParams.add(fieldName+" "+paramOrder);
+		modelMap.put("productsList", productDAO.getProducts(pageNum, groupId, orderParams));
+		modelMap.put("group_id", groupId);
+		modelMap.put("page", pageNum);
+		List<String> pagesList = productDAO.getPagesList(pageNum, groupId);
+		modelMap.put("pagesList", pagesList);
+		modelMap.put("maxPageNum", pagesList.get(pagesList.size() - 1));
+		return "ipage";
+	}
+
+	private void processOrderParamsByColumnName(HashMap<String, String> orderParams, String paramName,
+			String paramOrder, ModelMap model) {
+		if (!"none".equals(paramOrder.toLowerCase()))
+			orderParams.put(paramName, paramOrder);
 		putOrderParamsToModelMap(paramName, paramOrder, model);
 	}
-	
-	private void putOrderParamsToModelMap(String paramName, String paramOrder, ModelMap model){
-		switch(paramOrder.toLowerCase()){
-			case "none": model.put(paramName, "none"); model.put(paramName+"_n", "asc"); break;
-			case "asc": model.put(paramName, "asc"); model.put(paramName+"_n", "desc"); break;
-			case "desc": model.put(paramName, "desc"); model.put(paramName+"_n", "none"); break;
+
+	private void putOrderParamsToModelMap(String paramName, String paramOrder, ModelMap model) {
+		switch (paramOrder.toLowerCase()) {
+		case "none":
+			model.put(paramName, "none");
+			model.put(paramName + "_n", "asc");
+			break;
+		case "asc":
+			model.put(paramName, "asc");
+			model.put(paramName + "_n", "desc");
+			break;
+		case "desc":
+			model.put(paramName, "desc");
+			model.put(paramName + "_n", "none");
+			break;
 		}
 	}
-	
+
 }

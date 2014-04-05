@@ -5,6 +5,8 @@ html {
 	background-repeat:repeat;
 }
 
+a {color: blue}
+
 .inner_table {
 	background: url('../images/table.jpg');
 }
