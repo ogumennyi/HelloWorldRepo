@@ -11,6 +11,7 @@ import iShop.model.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -23,19 +24,19 @@ public class IShopServiceImpl implements IShopService {
 	private static final int PAGE_SIZE = 10;
 	
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<Group> getGroups() {
 		return groupDAO.getGroups();
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<Product> getProducts(Integer pageNum, Integer groupId, HashMap<String, String> orderParamsMap) {
 		return productDAO.getProducts(pageNum, PAGE_SIZE, groupId, orderParamsMap);
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<String> getPagesList(Integer pageNum, Integer groupId) {
 		ArrayList<String> pagesList = new ArrayList<String>();
 		int rowsCount = productDAO.getProductsCount(groupId);
