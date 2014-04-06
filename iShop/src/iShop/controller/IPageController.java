@@ -3,8 +3,7 @@ package iShop.controller;
 import java.util.HashMap;
 import java.util.List;
 
-import iShop.dao.JDBCGroupDAO;
-import iShop.dao.JDBCProductDAO;
+import iShop.service.IShopService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,26 +16,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IPageController {
 
 	@Autowired
-	JDBCGroupDAO groupDAO;
-
-	@Autowired
-	JDBCProductDAO productDAO;
+	private IShopService iShopService;
 
 	@RequestMapping(value = "/ipage", method = RequestMethod.GET)
 	public String productsByGroup(ModelMap modelMap, 
 			@RequestParam(value = "group_id", required = false) Integer groupId,
 			@RequestParam(value = "p_name_order", defaultValue = "none") String pNameOrder,
 			@RequestParam(value = "p_price_order", defaultValue = "none") String pPriceOrder,
-			@RequestParam(value = "page", required = false) Integer pageNum) {
-		if(pageNum==null) pageNum = new Integer(1);
+			@RequestParam(value = "page", defaultValue = "1") Integer pageNum) {
 		HashMap<String, String> orderParams = new HashMap<String, String>();
 		processOrderParamsByColumnName(orderParams, "p_name_order", pNameOrder, modelMap);
 		processOrderParamsByColumnName(orderParams, "p_price_order", pPriceOrder, modelMap);
-		modelMap.put("groupsList", groupDAO.getGroups());
-		modelMap.put("productsList", productDAO.getProducts(pageNum, groupId, orderParams));
+		modelMap.put("groupsList", iShopService.getGroups());
+		modelMap.put("productsList", iShopService.getProducts(pageNum, groupId, orderParams));
 		modelMap.put("group_id", groupId);
 		modelMap.put("page", pageNum);
-		List<String> pagesList = productDAO.getPagesList(pageNum, groupId);
+		List<String> pagesList = iShopService.getPagesList(pageNum, groupId);
 		modelMap.put("pagesList", pagesList);
 		modelMap.put("maxPageNum", pagesList.get(pagesList.size() - 1));
 		return "ipage";
