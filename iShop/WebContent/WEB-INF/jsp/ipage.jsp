@@ -9,6 +9,11 @@
 </head>
 <body>
 
+<c:url value="/ipage" var="allProductsLink">
+	<c:param name="nameOrder" value="${nameOrder}"/>
+	<c:param name="priceOrder" value="${priceOrder}"/>
+</c:url>
+
 <div style="width: 100%;">
 <div style="text-align: center; margin-top: 100px; color: #0101DF; font-size: 1.5em"><b>List of <i>iShop</i> products:</b></div>
 <br/>
@@ -16,7 +21,7 @@
 <tr><td valign="top">
 <table class="inner_table" border="1">
 	<tr>
-		<th width="150px" style="padding: 1x 2px">Product group (<a href="${pageContext.request.contextPath}/ipage?p_name_order=${p_name_order}&p_price_order=${p_price_order}">all</a>)</th>
+		<th width="150px" style="padding: 1x 2px">Product group (<a href="${allProductsLink}">all</a>)</th>
 	</tr>
 	<tr>
 		<td align="center">
@@ -24,13 +29,18 @@
 				<c:forEach items="${groupsList}" var="group" varStatus="vs">
 					<c:if test="${!vs.first}"><hr/></c:if>
 					<div>
-						<a href="${pageContext.request.contextPath}/ipage?group_id=${group.group_id}&p_name_order=${p_name_order}&p_price_order=${p_price_order}">
+						<c:url value="/ipage" var="groupLink">
+							<c:param name="groupId" value="${group.groupId}"/>
+							<c:param name="nameOrder" value="${nameOrder}"/>
+							<c:param name="priceOrder" value="${priceOrder}"/>
+						</c:url>
+						<a href="${groupLink}">
 						<c:choose>
-							<c:when test="${group.group_id == group_id}">
-								<b>${group.group_name}</b>
+							<c:when test="${group.groupId == groupId}">
+								<b>${group.groupName}</b>
 							</c:when>
 							<c:otherwise>
-								${group.group_name}
+								${group.groupName}
 							</c:otherwise>
 						</c:choose>
 						</a>
@@ -45,14 +55,20 @@
 <table class="inner_table" border="1" style="margin-left: 30px;">
 	<tr>
 		<th width="500px">
-			<c:if test="${'asc' eq p_name_order}"><img src="${pageContext.request.contextPath}/images/arrow_asc.png"/>&nbsp;</c:if>
-			<c:if test="${'desc' eq p_name_order}"><img src="${pageContext.request.contextPath}/images/arrow_desc.png"/>&nbsp;</c:if>
-			<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${page}&p_name_order=${p_name_order_n}&p_price_order=${p_price_order}">Product name</a>
+			<c:if test="${'asc' eq nameOrder}"><img src="<c:url value="/images/arrow_asc.png"/>"/>&nbsp;</c:if>
+			<c:if test="${'desc' eq nameOrder}"><img src="<c:url value="/images/arrow_desc.png"/>"/>&nbsp;</c:if>
+			<c:url value="/ipage" var="productNameLink">
+				<c:param name="groupId" value="${groupId}"/>
+				<c:param name="page" value="${page}"/>
+				<c:param name="nameOrder" value="${nameOrderNext}"/>
+				<c:param name="priceOrder" value="${priceOrder}"/>
+			</c:url>
+			<a href="${productNameLink}">Product name</a>
 		</th>
 		<th width="120px">
-			<c:if test="${'asc' eq p_price_order}"><img src="${pageContext.request.contextPath}/images/arrow_asc.png"/>&nbsp;</c:if>
-			<c:if test="${'desc' eq p_price_order}"><img src="${pageContext.request.contextPath}/images/arrow_desc.png"/>&nbsp;</c:if>
-			<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${page}&curr_order_by=p_name_order&p_name_order=${p_name_order}&p_price_order=${p_price_order_n}">Product price</a>
+			<c:if test="${'asc' eq priceOrder}"><img src="${pageContext.request.contextPath}/images/arrow_asc.png"/>&nbsp;</c:if>
+			<c:if test="${'desc' eq priceOrder}"><img src="${pageContext.request.contextPath}/images/arrow_desc.png"/>&nbsp;</c:if>
+			<a href="${pageContext.request.contextPath}/ipage?groupId=${groupId}&page=${page}&nameOrder=${nameOrder}&priceOrder=${priceOrderNext}">Product price</a>
 		</th>
 	</tr>
 	<tr>
@@ -65,7 +81,7 @@
 					<div style="padding: 5px 2px">
 						<c:forEach items="${productsList}" var="product" varStatus="vs">
 							<c:if test="${!vs.first}"><hr/></c:if>
-							<div>${product.product_name}</div>
+							<div>${product.productName}</div>
 						</c:forEach>
 					</div>
 				</td>
@@ -74,7 +90,7 @@
 						<c:forEach items="${productsList}" var="product" varStatus="vs">
 							<c:if test="${vs.count == 0}"><div>No products found</div></c:if>
 							<c:if test="${!vs.first}"><hr/></c:if>
-							<div>${product.product_price}</div>
+							<div>${product.productPrice}</div>
 						</c:forEach>
 					</div>
 				</td>
@@ -90,9 +106,9 @@
 						<img src="${pageContext.request.contextPath}/images/arr_l_d.png" align="middle" title="Previous page"/>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${1}&p_name_order=${p_name_order}&p_price_order=${p_price_order}">
+						<a href="${pageContext.request.contextPath}/ipage?groupId=${groupId}&page=${1}&nameOrder=${nameOrder}&priceOrder=${priceOrder}">
 							<img src="${pageContext.request.contextPath}/images/dbl_arr_l.png" align="middle" title="First page"/></a>
-						<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${page-1}&p_name_order=${p_name_order}&p_price_order=${p_price_order}">
+						<a href="${pageContext.request.contextPath}/ipage?groupId=${groupId}&page=${page-1}&nameOrder=${nameOrder}&priceOrder=${priceOrder}">
 							<img src="${pageContext.request.contextPath}/images/arr_l.png" align="middle" title="Previous page"/></a>
 					</c:otherwise>
 				</c:choose>
@@ -110,7 +126,7 @@
 								</c:when>
 								<c:otherwise>
 									<span style="padding: 0px 5px; cursor: pointer; text-decoration: underline">
-										<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${pagenum}&p_name_order=${p_name_order}&p_price_order=${p_price_order}">${pagenum}</a>
+										<a href="${pageContext.request.contextPath}/ipage?groupId=${groupId}&page=${pagenum}&nameOrder=${nameOrder}&priceOrder=${priceOrder}">${pagenum}</a>
 									</span>
 								</c:otherwise>
 							</c:choose>
@@ -125,9 +141,9 @@
 						<img src="${pageContext.request.contextPath}/images/dbl_arr_r_d.png" align="middle" title="First page"/>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${page+1}&p_name_order=${p_name_order}&p_price_order=${p_price_order}">
+						<a href="${pageContext.request.contextPath}/ipage?groupId=${groupId}&page=${page+1}&nameOrder=${nameOrder}&priceOrder=${priceOrder}">
 							<img src="${pageContext.request.contextPath}/images/arr_r.png" align="middle" title="Previous page"/></a>
-						<a href="${pageContext.request.contextPath}/ipage?group_id=${group_id}&page=${maxPageNum}&p_name_order=${p_name_order}&p_price_order=${p_price_order}">
+						<a href="${pageContext.request.contextPath}/ipage?groupId=${groupId}&page=${maxPageNum}&nameOrder=${nameOrder}&priceOrder=${priceOrder}">
 							<img src="${pageContext.request.contextPath}/images/dbl_arr_r.png" align="middle" title="First page"/></a>
 					</c:otherwise>
 				</c:choose>

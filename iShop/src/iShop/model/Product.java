@@ -2,48 +2,48 @@ package iShop.model;
 
 public class Product {
 	
-	private int product_id;
-	private String product_name;
-	private int group_id;
-	private float product_price;
+	private int productId;
+	private String productName;
+	private int groupId;
+	private float productPrice;
 
-	public Product(int product_id, String product_name, int group_id, float product_price) {
-		this.product_id = product_id;
-		this.product_name = product_name;
-		this.group_id = group_id;
-		this.product_price = product_price;
+	public Product(int productId, String productName, int groupId, float productPrice) {
+		this.productId = productId;
+		this.productName = productName;
+		this.groupId = groupId;
+		this.productPrice = productPrice;
 	}
 	
-	public int getGroup_id() {
-		return group_id;
+	public int getGroupId() {
+		return groupId;
 	}
 	
-	public void setGroup_id(int group_id) {
-		this.group_id = group_id;
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 	
-	public int getProduct_id() {
-		return product_id;
+	public int getProductId() {
+		return productId;
 	}
 	
-	public void setProduct_id(int product_id) {
-		this.product_id = product_id;
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 	
-	public String getProduct_name() {
-		return product_name;
+	public String getProductName() {
+		return productName;
 	}
 	
-	public void setProduct_name(String product_name) {
-		this.product_name = product_name;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 	
-	public float getProduct_price() {
-		return product_price;
+	public float getProductPrice() {
+		return productPrice;
 	}
 	
-	public void setProduct_price(float product_price) {
-		this.product_price = product_price;
+	public void setProductPrice(float productPrice) {
+		this.productPrice = productPrice;
 	}
 	
 }

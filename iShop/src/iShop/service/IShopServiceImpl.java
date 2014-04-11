@@ -1,8 +1,8 @@
 package iShop.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import iShop.dao.JDBCGroupDAO;
 import iShop.dao.JDBCProductDAO;
@@ -24,19 +24,19 @@ public class IShopServiceImpl implements IShopService {
 	private static final int PAGE_SIZE = 10;
 	
 	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public List<Group> getGroups() {
 		return groupDAO.getGroups();
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
-	public List<Product> getProducts(Integer pageNum, Integer groupId, HashMap<String, String> orderParamsMap) {
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	public List<Product> getProducts(Integer pageNum, Integer groupId, Map<String, String> orderParamsMap) {
 		return productDAO.getProducts(pageNum, PAGE_SIZE, groupId, orderParamsMap);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	public List<String> getPagesList(Integer pageNum, Integer groupId) {
 		ArrayList<String> pagesList = new ArrayList<String>();
 		int rowsCount = productDAO.getProductsCount(groupId);
@@ -44,9 +44,11 @@ public class IShopServiceImpl implements IShopService {
 			pagesList.add("0");
 			return pagesList;
 		}
+		
 		int pagesCount = rowsCount/PAGE_SIZE+1;
 		final int EDGE_PAGES_CNT = 1;
 		final int NEIGHBOUR_PAGES_CNT = 2;
+		// Building left subsequence
 		if(pageNum <= NEIGHBOUR_PAGES_CNT + EDGE_PAGES_CNT + 1){
 			for(int i=1; i<=pageNum; i++){
 				pagesList.add(String.valueOf(i));
@@ -60,6 +62,7 @@ public class IShopServiceImpl implements IShopService {
 				pagesList.add(String.valueOf(i));
 			}
 		}
+		// Building right subsequence		
 		if(pageNum >= pagesCount - NEIGHBOUR_PAGES_CNT - EDGE_PAGES_CNT){
 			for(int i=pageNum+1; i<=pagesCount; i++){
 				pagesList.add(String.valueOf(i));
@@ -73,8 +76,6 @@ public class IShopServiceImpl implements IShopService {
 				pagesList.add(String.valueOf(i));
 			}
 		}
-		System.out.println(pageNum);
-		System.out.println(pagesList);
 		return pagesList;
 	}
 

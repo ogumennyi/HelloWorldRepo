@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -22,7 +22,8 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 	private DataSource dataSource;
 
 	@Override
-	public List<Product> getProducts(Integer pageNum, int pageSize, Integer groupId, HashMap<String, String> orderParamsMap) {
+	public List<Product> getProducts(Integer pageNum, int pageSize, Integer groupId, Map<String, String> orderParamsMap) {
+		// Preparing SQL statement
 		String sql = "SELECT * FROM t_product";
 		if(groupId != null)
 			sql+=" WHERE group_id="+groupId.toString();
@@ -36,29 +37,29 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 		if (orderByClause != null)
 			sql += orderByClause;
 		sql += " LIMIT "+(pageNum-1)*pageSize+", "+pageSize;
-		System.out.println(sql);
+		// Fetching products
 		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
 			List<Product> productsList = new ArrayList<Product>();
 			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
 			while (rs.next()) {
 				Product product = new Product(rs.getInt("PRODUCT_ID"), rs.getString("PRODUCT_NAME"),
 						rs.getInt("GROUP_ID"), rs.getFloat("PRODUCT_PRICE"));
 				productsList.add(product);
 			}
-			rs.close();
-			ps.close();
 			return productsList;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
+			try {
+				if (rs != null) rs.close();
+				if (ps != null) ps.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
 			}
 		}
 	}
@@ -69,11 +70,13 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 		if(groupId != null) 
 			sql+=" WHERE group_id="+groupId.toString();
 		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int rowsCount = 0;
 		try {
 			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				rowsCount = rs.getInt(1);
 			}
@@ -83,20 +86,20 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-				}
+			try {
+				if (rs != null) rs.close();
+				if (ps != null) ps.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
 			}
 		}
 	}
 	
 	private String getColumnNameByParam(String param) {
 		switch (param) {
-		case "p_name_order":
+		case "nameOrder":
 			return "product_name";
-		case "p_price_order":
+		case "priceOrder":
 			return "product_price";
 		default:
 			return null;
