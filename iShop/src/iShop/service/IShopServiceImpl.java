@@ -40,7 +40,7 @@ public class IShopServiceImpl implements IShopService {
 	public List<String> getPagesList(Integer pageNum, Integer groupId) {
 		ArrayList<String> pagesList = new ArrayList<String>();
 		int rowsCount = productDAO.getProductsCount(groupId);
-		int pagesCount = rowsCount/PAGE_SIZE+1;
+		int pagesCount = (rowsCount-1)/PAGE_SIZE+1;
 		if(rowsCount==0){
 			pagesList.add("0");
 			return pagesList;

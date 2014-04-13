@@ -32,7 +32,7 @@ public class ParamsValidator implements Validator {
 		
 		if(p.getPage() == null) p.setPage(1);
 		else {
-			int pagesCount = productDAO.getProductsCount(p.getGroupId())/IShopServiceImpl.PAGE_SIZE+1;
+			int pagesCount = (productDAO.getProductsCount(p.getGroupId())-1)/IShopServiceImpl.PAGE_SIZE+1;
 			if(p.getPage() > pagesCount) throw new CustomException("The page index could not be greater than pages count");
 			if(p.getPage() <= 0) throw new CustomException("The page index could not be less than 0");
 		}

@@ -35,7 +35,7 @@ public class IPageController {
 		if (params.getNameOrder() != null && params.getNameOrder().length() > 0)
 			orderParams.put("nameOrder", params.getNameOrder());
 		if (params.getPriceOrder() != null && params.getPriceOrder().length() > 0)
-			orderParams.put("nameOrder", params.getPriceOrder());
+			orderParams.put("priceOrder", params.getPriceOrder());
 		modelMap.put("groupsList", iShopService.getGroups());
 		modelMap.put("productsList", iShopService.getProducts(params.getPage(), params.getGroupId(), orderParams));
 		modelMap.put("params", params);
