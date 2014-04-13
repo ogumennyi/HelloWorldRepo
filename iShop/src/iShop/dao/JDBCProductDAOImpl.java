@@ -38,7 +38,6 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 		if (orderByClause != null)
 			sql += orderByClause;
 		sql += " LIMIT "+(pageNum-1)*pageSize+", "+pageSize;
-		System.out.println(sql);
 		// Fetching products
 		Connection conn = null;
 		PreparedStatement ps = null;
