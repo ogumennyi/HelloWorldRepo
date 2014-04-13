@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Welcome to iShop</title>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/ishop.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/ishop.css"/>" media="screen" />
 </head>
 <body>
 	<div style="width: 100%; margin-top: 300px; text-align: center; font-size: 1.4em">

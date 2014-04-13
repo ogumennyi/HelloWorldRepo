@@ -5,13 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Welcome to iShop</title>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/ishop.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/ishop.css"/>" media="screen" />
 </head>
 <body>
 	<div style="width: 100%; margin-top: 300px; text-align: center; font-size: 1.4em">
-	<div>There were some mistakes with the request parameters :(</div>
+	<div>${exception.errMsg} :(</div>
 	<br/>
-	<a href="<c:url value="/ipage"/>" style="color: #0101DF"><i>Get back to <b>iShop</b> and try again</i></a>
+	<a href="<c:url value="/ipage"/>" style="color: #0101DF"><i>Get back to <b>iShop</b> main page</i></a>
 	</div>
 </body>
 </html>

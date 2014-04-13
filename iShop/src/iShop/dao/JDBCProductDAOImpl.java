@@ -1,5 +1,6 @@
 package iShop.dao;
 
+import iShop.exception.CustomException;
 import iShop.model.Product;
 
 import java.sql.Connection;
@@ -53,7 +54,7 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 			}
 			return productsList;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new CustomException(e.getMessage());
 		} finally {
 			try {
 				if (rs != null) rs.close();
@@ -84,7 +85,7 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 			ps.close();
 			return rowsCount;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new CustomException(e.getMessage());
 		} finally {
 			try {
 				if (rs != null) rs.close();
@@ -105,5 +106,5 @@ public class JDBCProductDAOImpl implements JDBCProductDAO {
 			return null;
 		}
 	}
-	
+
 }

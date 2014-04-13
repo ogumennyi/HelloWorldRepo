@@ -7,5 +7,6 @@ import java.util.List;
 public interface JDBCGroupDAO {
 
 	public List<Group> getGroups();
+	public Group getGroup(Integer groupId);
 	
 }

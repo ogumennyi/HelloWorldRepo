@@ -21,7 +21,7 @@ public class IShopServiceImpl implements IShopService {
 	private JDBCGroupDAO groupDAO;
 	@Autowired
 	private JDBCProductDAO productDAO;
-	private static final int PAGE_SIZE = 10;
+	public static final int PAGE_SIZE = 10;
 	
 	@Override
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -40,12 +40,12 @@ public class IShopServiceImpl implements IShopService {
 	public List<String> getPagesList(Integer pageNum, Integer groupId) {
 		ArrayList<String> pagesList = new ArrayList<String>();
 		int rowsCount = productDAO.getProductsCount(groupId);
+		int pagesCount = rowsCount/PAGE_SIZE+1;
 		if(rowsCount==0){
 			pagesList.add("0");
 			return pagesList;
 		}
 		
-		int pagesCount = rowsCount/PAGE_SIZE+1;
 		final int EDGE_PAGES_CNT = 1;
 		final int NEIGHBOUR_PAGES_CNT = 2;
 		// Building left subsequence
